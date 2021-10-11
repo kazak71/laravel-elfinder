@@ -77,11 +77,13 @@ class ElfinderController extends Controller
     public function showFilePicker($input_id)
     {
         $type = Request::input('type');
-        $mimeTypes = implode(',',array_map(function($t){return "'".$t."'";}, explode(',',$type)));
+        $mimeTypes = implode(',', array_map(function ($t) {
+            return "'".$t."'";
+        }, explode(',', $type)));
         return $this->app['view']
             ->make($this->package . '::filepicker')
             ->with($this->getViewVars())
-            ->with(compact('input_id','type','mimeTypes'));
+            ->with(compact('input_id', 'type', 'mimeTypes'));
     }
 
     public function showConnector(Request $request)
@@ -90,9 +92,9 @@ class ElfinderController extends Controller
 
         if (empty($roots)) {
             $rootDir = request('rootDir');
-            if(!$rootDir){
+            if (!$rootDir) {
                 $dirs = (array) $this->app['config']->get('elfinder.dir', []);
-            }else{
+            } else {
                 $dirs[] = $rootDir;
                 $path = public_path($rootDir);
                 if (!File::exists($path)) {
@@ -149,8 +151,8 @@ class ElfinderController extends Controller
 
     protected function getViewVars()
     {
-        $dir = 'packages/barryvdh/' . $this->package;
-        $locale = str_replace("-",  "_", $this->app->config->get('app.locale'));
+        $dir = 'packages/kazak71/' . $this->package;
+        $locale = str_replace("-", "_", $this->app->config->get('app.locale'));
         if (!file_exists($this->app['path.public'] . "/$dir/js/i18n/elfinder.$locale.js")) {
             $locale = false;
         }
