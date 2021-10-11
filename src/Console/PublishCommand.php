@@ -9,7 +9,8 @@ use Illuminate\Filesystem\Filesystem;
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  */
-class PublishCommand extends Command {
+class PublishCommand extends Command
+{
 
     /**
      * The console command name.
@@ -52,10 +53,10 @@ class PublishCommand extends Command {
     public function handle()
     {
 
-        $package = 'barryvdh/elfinder';
+        $package = 'kazak71/elfinder';
         $destination = $this->publishPath . "/packages/{$package}";
 
-        if ( ! is_null($path = $this->getElfinderPath())) {
+        if (! is_null($path = $this->getElfinderPath())) {
             if ($this->files->exists($destination)) {
                 $this->files->deleteDirectory($destination);
                 $this->info('Old published Assets have been removed');
@@ -66,7 +67,7 @@ class PublishCommand extends Command {
             $this->error('Could not find elfinder path');
         }
 
-        if ( ! is_null($path = $this->getPath())) {
+        if (! is_null($path = $this->getPath())) {
             $copyPublic = $this->files->copyDirectory($path, $destination);
         } else {
             $copyPublic = false;
@@ -78,7 +79,6 @@ class PublishCommand extends Command {
         } else {
             $this->error('Could not publish alles assets for '.$package);
         }
-
     }
 
     /**
@@ -92,7 +92,7 @@ class PublishCommand extends Command {
         $result = true;
         $directories = array('js', 'css', 'img', 'sounds');
         $elfinderPath = $this->getElfinderPath();
-        foreach($directories as $dir){
+        foreach ($directories as $dir) {
             $path = $elfinderPath.'/'.$dir;
             $success = $this->files->copyDirectory($path, $destination.'/'.$dir);
             $result = $success && $result;
@@ -103,7 +103,8 @@ class PublishCommand extends Command {
     /**
      *  Get the path of the public folder, to merge with the elFinder folders.
      */
-    protected function getPath(){
+    protected function getPath()
+    {
         return __DIR__ .'/../../resources/assets';
     }
 
@@ -117,5 +118,4 @@ class PublishCommand extends Command {
         $reflector = new \ReflectionClass('elFinder');
         return realpath(dirname($reflector->getFileName()) . '/..');
     }
-
 }
